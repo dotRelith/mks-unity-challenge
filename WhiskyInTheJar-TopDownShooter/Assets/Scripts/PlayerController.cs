@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : Entity
 {
     public static PlayerController instance;
     private Rigidbody2D playerRigidbody;
@@ -16,13 +16,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float movementSpeed = 4f;
     [SerializeField] private float maxVelocity = 12f;
     [SerializeField] private float velocitySmoothTime = 2f;
-    void Start()
+
+    protected override void Start()
     {
+        base.Start();
         instance = this;
         playerRigidbody = GetComponent<Rigidbody2D>();
     }
-    void Update()
+
+    protected override void Update()
     {
+        base.Update();
         playerInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));        
     }
     void FixedUpdate()
@@ -36,7 +40,5 @@ public class PlayerController : MonoBehaviour
             currentRotation = (currentRotation - playerInput.x * rotationSpeed * velocity.magnitude * Time.fixedDeltaTime) % 360f;
             transform.rotation = Quaternion.Euler(0f, 0f, currentRotation);
         }
-        if (playerRigidbody.velocity.magnitude < 0.1f)
-            playerRigidbody.velocity = Vector2.zero;
     }
 }
