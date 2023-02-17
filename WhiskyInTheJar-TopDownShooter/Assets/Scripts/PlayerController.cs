@@ -67,7 +67,7 @@ public class PlayerController : Entity
         playerRigidbody.velocity = velocity;
 
         if(velocity.magnitude > 0.1f) {
-            currentRotation = (currentRotation - playerInput.x * rotationSpeed * velocity.magnitude * Time.fixedDeltaTime) % 360f;
+            currentRotation = (currentRotation - playerInput.x * rotationSpeed * ((velocity.magnitude >= 0.3f) ? velocity.magnitude : 1) * Time.fixedDeltaTime) % 360f;
             transform.rotation = Quaternion.Euler(0f, 0f, currentRotation);
         }
     }
