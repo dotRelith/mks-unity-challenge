@@ -12,6 +12,7 @@ Shader "Custom/UnlitTransparentShader" {
              Fog { Mode Off }
  
              Blend SrcAlpha OneMinusSrcAlpha
+             Cull Off
  
              Pass {
                  Color[_Color]
