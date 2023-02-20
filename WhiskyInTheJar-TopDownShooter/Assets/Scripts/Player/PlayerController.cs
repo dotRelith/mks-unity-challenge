@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : Entity
 {
-    // Enumerations
-    private enum AttackType { Frontal, Side }
-    private enum AttackSide { Left, Right }
+    //Enumerations
+    protected enum AttackType { Frontal, Side }
 
     // Singleton instance
     public static PlayerController instance;
@@ -15,7 +13,6 @@ public class PlayerController : Entity
     // Components
     [Header("Components")]
     [SerializeField] private MeshFilter attackFilter;
-    private Rigidbody2D playerRigidbody;
     private Mesh attackMesh;
 
     // Player movement variables
@@ -51,10 +48,10 @@ public class PlayerController : Entity
     {
         base.Start();
         instance = this;
-        playerRigidbody = GetComponent<Rigidbody2D>();
 
         attackMesh = new Mesh();
         attackFilter.mesh = attackMesh;
+        onEntityDeath += (s,e) => { StartCoroutine(MatchManager.instance.EndMatchCoroutine()); }; 
     }
 
     protected override void Update()
@@ -89,7 +86,7 @@ public class PlayerController : Entity
 
         if (Input.GetKeyUp(keyCode)){
             if (attackReady){
-                ExecuteAttack(attackType);
+                ExecuteAttack(currentAttackSide, sideAttackWidth, cannonballVelocity);
                 attackReady = false;
                 attackStarted = false;
                 attackMesh.Clear();
@@ -124,7 +121,7 @@ public class PlayerController : Entity
     {   
         Vector2 targetVelocity = (playerInput.y > 0) ? transform.up * playerInput.y * movementSpeed : Vector2.zero;
         velocity = Vector2.SmoothDamp(velocity, targetVelocity, ref velocitySmoothing, velocitySmoothTime, playerMaxVelocity);
-        playerRigidbody.velocity = velocity;
+        entityRigidbody.velocity = velocity;
 
         if(velocity.magnitude > 0.1f) {
             currentRotation = (currentRotation - playerInput.x * rotationSpeed * ((velocity.magnitude >= 0.3f) ? velocity.magnitude : 1) * Time.fixedDeltaTime) % 360f;
@@ -196,41 +193,10 @@ public class PlayerController : Entity
         new Vector3(0, halfHeight, 0f)
         };
     }
-
-    private void ExecuteAttack(AttackType attackType)
+    protected override void ExecuteAttack(AttackSide attackSide, float sideAttackWidth, float cannonballSpeed)
     {
         secondsPassedForAttack = 0;
-        int cannonballNumber = 1;
-        if (attackType == AttackType.Side)
-            cannonballNumber = 3;
-        float distanceIncrease = sideAttackWidth / cannonballNumber;
-        float currentDistance = distanceIncrease;
-        for (int i = 0; i < cannonballNumber; i++)
-        {
-            GameObject cannonball = Instantiate(Resources.Load("Cannonball")) as GameObject;
-            Vector3 cannonballOrigin = Vector2.zero;
-            switch (attackType){
-                case AttackType.Side:
-                    cannonballOrigin = (currentAttackSide == AttackSide.Left) ? -1 * this.transform.right : this.transform.right;
-                    break;
-                case AttackType.Frontal:
-                    cannonballOrigin = this.transform.up * 1.5f;
-                    break;
-            }
-            cannonballOrigin *= 1.25f;
-            Vector3 cannonballDirection = ((transform.position + cannonballOrigin) - this.transform.position).normalized;
+        base.ExecuteAttack(attackSide, sideAttackWidth, cannonballSpeed);
 
-            if(attackType == AttackType.Side){
-                cannonballOrigin -= Vector3.up * currentDistance;
-                currentDistance -= distanceIncrease;
-            }
-
-            cannonball.GetComponent<Cannonball>().isFromPlayer = true;
-
-            cannonball.transform.position = this.transform.position + cannonballOrigin;
-            Rigidbody2D cannonballRigidbody = cannonball.GetComponent<Rigidbody2D>();
-            cannonballRigidbody.velocity = playerRigidbody.velocity;
-            cannonballRigidbody.AddForce(cannonballDirection * cannonballVelocity, ForceMode2D.Impulse);
-        }
     }
 }

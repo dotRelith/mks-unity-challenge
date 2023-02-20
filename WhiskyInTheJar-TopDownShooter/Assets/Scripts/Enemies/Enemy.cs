@@ -3,7 +3,6 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class Enemy : Entity
 {
     [Header("Enemy Settings")]
@@ -11,6 +10,8 @@ public class Enemy : Entity
     [SerializeField] private float movementSpeed = 3.6f;
     [SerializeField] private float rotationSpeed = 9f;
     [SerializeField] private float stoppingDistance = 2f;
+    [SerializeField] protected float enemyPointBonus = 0f;
+    public float EnemyPointBonus { get { return enemyPointBonus; } }
 
     [Header("Roaming Settings")]
     [SerializeField] private float roamRadius = 5f;
@@ -20,14 +21,8 @@ public class Enemy : Entity
     private Vector2 startRoamPosition;
     private float timeSinceDirectionChange = 0f;
     private List<Collider2D> colliders = new List<Collider2D>();
-    private Rigidbody2D enemyRigidbody;
     private Vector2? moveTarget;
     private bool arrived = true;
-
-    private void Awake()
-    {
-        enemyRigidbody = GetComponent<Rigidbody2D>();
-    }
 
     protected override void Update()
     {
@@ -45,8 +40,11 @@ public class Enemy : Entity
             return;
 
         Collider2D playerCollider = colliders.Find(c => c.CompareTag("Player"));
+        Collider2D enemyCollider = colliders.Find(c => c.CompareTag("Enemy"));
         if (playerCollider != null)
             TargetDetected(playerCollider.transform);
+        else if (enemyCollider != null && enemyCollider.transform != this.transform)
+            TargetDetected(enemyCollider.transform);
         else if (arrived)
             Roam();
 
@@ -54,10 +52,10 @@ public class Enemy : Entity
             MoveTo(moveTarget.Value);
 
         // Face the direction of movement
-        Vector2 direction = enemyRigidbody.velocity.normalized;
+        Vector2 direction = entityRigidbody.velocity.normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed);
     }
 
     private void Roam()
@@ -94,7 +92,7 @@ public class Enemy : Entity
                 arrived = true;
         }
 
-        enemyRigidbody.velocity = direction * currentSpeed;
+        entityRigidbody.velocity = direction * currentSpeed;
     }
 
     protected virtual void TargetDetected(Transform targetTransform) {}

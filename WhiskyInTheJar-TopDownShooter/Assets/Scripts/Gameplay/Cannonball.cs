@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Cannonball : MonoBehaviour
 {
-    public bool isFromPlayer = false;
+    [HideInInspector] public bool isFromPlayer = false;
     private Rigidbody2D cannonballRigidbody;
     public int cannoballDamage = 45;
     private void Start()
@@ -14,16 +14,19 @@ public class Cannonball : MonoBehaviour
     }
     private void Update()
     {
-        if(cannonballRigidbody.velocity.magnitude <= 0.1f)
-            Destroy(this.gameObject);
+        if (cannonballRigidbody.velocity.magnitude <= 0.1f)
+            DestroyCannonball();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Entity colidedEntity = collision.transform.GetComponent<Entity>();
         if (colidedEntity != null){
             colidedEntity.DamageEntity(cannoballDamage, isFromPlayer);
-            Destroy(this.gameObject);
+            DestroyCannonball();
         }
-        print(collision.transform.name);
+    }
+    private void DestroyCannonball(){
+        Destroy(Instantiate(Resources.Load("Explosion"), this.transform.position, this.transform.rotation), 2);
+        Destroy(this.gameObject);
     }
 }

@@ -1,0 +1,35 @@
+﻿High priority:
+	Explosion animation ✔
+	Shooter enemy 
+	title screen
+	configuration
+	boat graphics change according to health
+	spawner script
+	comment all lines
+	add code regions
+	add markdown descriptions
+	add tutorial on start of match
+
+Low priority:
+	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat)
+	add ambient music
+	add sound effect for explosion, shoots fired, player death, etc
+	add death radius(shark eats player if past the death radius)
+	add feature that sets Rigidbody and Collider to correct params when adding Entity to gameobject ✔
+	add localization for portuguese
+
+Very Low priority:
+	health pack
+	IA seeks health pack
+	ability to customize the player ship
+	add better navigation to AI
+	add high score in the title screen & end screen
+	add total score in the title screen & end screen
+	add you died screen
+	add effect on timer when time is bout to run out (red pulse)
+	add shrapnell particles when boat is hit (-collision.normal)
+
+Ultra Low priority:
+	make attack render mesh resemble an arrow(at this point just do a shader)
+	remove unused libraries
+	add cannonball sinking to water particle

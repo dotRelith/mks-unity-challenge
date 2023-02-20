@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Gameplay\EndlessOcean.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MatchManager.cs" />
-    <Compile Include="Assets\Scripts\Enemies\ChaseEnemy.cs" />
+    <Compile Include="Assets\Scripts\Enemies\ChaserEnemy.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Cannonball.cs" />
     <Compile Include="Assets\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
