@@ -8,13 +8,13 @@ public class ChaserEnemy : Enemy
     [SerializeField] private int damage = 80;
     protected override void Initialize(){
         base.Initialize();
-        enemyPointBonus = 134;
+        enemyPointBonus = Random.Range(75f, 125f);
     }
     protected override void TargetDetected(Transform targetTransform){
         MoveTo(targetTransform.position);
     }
     private void OnCollisionEnter2D(Collision2D collision){
-        if(collision.transform.CompareTag("Player") || collision.transform.CompareTag("Enemy")) {
+        if(collision.transform.CompareTag("Player") || collision.transform.CompareTag("Enemy") && !IsDead) {
             collision.transform.GetComponent<Entity>().DamageEntity(damage, false);
             DamageEntity(EntityHealth, false);
         }

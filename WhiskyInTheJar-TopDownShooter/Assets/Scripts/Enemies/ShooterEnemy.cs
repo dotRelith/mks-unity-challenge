@@ -22,7 +22,8 @@ public class ShooterEnemy : Enemy
     protected override void Initialize()
     {
         base.Initialize();
-        enemyPointBonus = 67;
+        enemyPointBonus = Random.Range(25f, 75f);
+        movementSpeed = 5f;
     }
 
     protected override void HandleRotation()

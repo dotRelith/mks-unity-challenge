@@ -6,15 +6,15 @@ using Random = UnityEngine.Random;
 public class Enemy : Entity
 {
     [Header("Enemy Settings")]
-    [SerializeField] private float aggroRange = 8f;
-    [SerializeField] private float movementSpeed = 3.6f;
+    [SerializeField] private float aggroRange = 16f;
+    [SerializeField] protected float movementSpeed = 3.6f;
     [SerializeField] private float rotationSpeed = 9f;
     [SerializeField] private float stoppingDistance = 2f;
     [SerializeField] protected float enemyPointBonus = 0f;
     public float EnemyPointBonus { get { return enemyPointBonus; } }
 
     [Header("Roaming Settings")]
-    [SerializeField] private float roamRadius = 5f;
+    [SerializeField] private float roamRadius = 8f;
     [SerializeField] private float timeToChangeDirection = 2f;
     [SerializeField] private float stoppingSpeed = 1f;
     protected Transform targetTransform;

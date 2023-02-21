@@ -27,9 +27,10 @@ public class Entity : MonoBehaviour
     protected EventHandler onHealthChanged;
     protected EventHandler onEntityDeath;
 
-    private GameObject entityBody;
-    private (string, Sprite, Sprite, Sprite) entityInfo;
-    private GameObject entitySail;
+    [SerializeField] private test entityBodySprites;
+    private SpriteRenderer entityBody;
+    [SerializeField] private test entitySailSprites;
+    private SpriteRenderer entitySail;
 
     protected virtual void Reset(){
         Initialize();
@@ -49,9 +50,59 @@ public class Entity : MonoBehaviour
         entityHealth = entityMaxHealth;
         entityHealthBar = Instantiate(Resources.Load("HealthBarPivot"),this.transform) as GameObject;
         Instantiate(Resources.Load("BoatRippleParticle"), this.transform);
-        onHealthChanged += ((s, e) => { UpdateHealthBar(); });
+        onHealthChanged += ((s, e) => {
+            UpdateHealthBar();
+            entityBody.sprite = GetBodySpriteByHealth();
+            entitySail.sprite = GetSailSpriteByHealth();
+        });
         onEntityDeath += OnDeath;
         UpdateHealthBar();
+        InstantiateVisuals(this is PlayerController);
+    }
+
+    private void InstantiateVisuals(bool isPlayer)
+    {
+        DamageableSprites sprites = MatchManager.Sprites;
+        if(isPlayer){
+            entitySailSprites = sprites.DamageableSails[0];
+            entityBodySprites = sprites.DamageableBody[0];
+        } else {
+            //Sail Color
+            int i = UnityEngine.Random.Range(0, sprites.DamageableSails.Length-1);
+            entitySailSprites = sprites.DamageableSails[i];
+            //Body
+            if (UnityEngine.Random.Range(0, 1) >= .7f){//30% of spawning a thicc body ship
+                entityBodySprites = sprites.DamageableBody[1];
+                entityMaxHealth = 175;
+                entityHealth = entityMaxHealth;
+            }else
+                entityBodySprites = sprites.DamageableBody[0];
+        }
+        //Instantiate Sprites to Entity
+        GameObject aux = Instantiate(Resources.Load("boatPrefab"), this.transform) as GameObject;
+        entityBody = aux.transform.Find("Body").GetComponent<SpriteRenderer>();
+        entityBody.sprite = GetBodySpriteByHealth();
+        entitySail = aux.transform.Find("Sail").GetComponent<SpriteRenderer>();
+        entitySail.sprite = GetSailSpriteByHealth();
+    }
+
+    private Sprite GetBodySpriteByHealth()
+    {
+        if (entityHealth < entityMaxHealth * 0.30f)
+            return entityBodySprites.badlyDamagedSprite;
+        else if (entityHealth < entityMaxHealth * 0.60f)
+            return entityBodySprites.damagedSprite;
+        else
+            return entityBodySprites.wholeSprite;
+    }
+    private Sprite GetSailSpriteByHealth()
+    {
+        if (entityHealth < entityMaxHealth * 0.30f)
+            return entitySailSprites.badlyDamagedSprite;
+        else if (entityHealth < entityMaxHealth * 0.60f)
+            return entitySailSprites.damagedSprite;
+        else
+            return entitySailSprites.wholeSprite;
     }
 
     protected virtual void Update(){
@@ -62,13 +113,12 @@ public class Entity : MonoBehaviour
     protected virtual void OnDeath(object sender, EventArgs e){
         if(IsDead) return;
         IsDead = true;
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        //GetComponent<Collider2D>().enabled = false; //if entity has velocity on death its slides on islands, etc
+        entityRigidbody.velocity = Vector2.zero;
+        entityRigidbody.freezeRotation = true;
+        Destroy(entityHealthBar);
         Destroy(Instantiate(Resources.Load("Explosion"), this.transform.position, this.transform.rotation),2);
-        foreach (Transform child in transform)
-            Destroy(child.gameObject);
-        GameObject boatDeathObject = Instantiate(Resources.Load("BoatDeath")) as GameObject;
-        boatDeathObject.transform.position = this.transform.position;
+        GetComponentInChildren<Animator>().SetBool("isDead", true);
 
         if(this is Enemy){
             if (lastHitByPlayer){
@@ -76,7 +126,6 @@ public class Entity : MonoBehaviour
             }
         }
         Destroy(this.gameObject, 12);
-        Destroy(boatDeathObject, 12);
     }
 
     private void UpdateHealthBar(){

@@ -10,6 +10,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] private DamageableSprites sprites;
     public static DamageableSprites Sprites { get { return instance.sprites; } }
     private int playerPoints = 0;
+    public static int PlayerPoints { get { return instance.playerPoints; } }
     private float secondsLeft;
     private int matchDurationInSeconds = 180;
     [SerializeField] private TextMeshProUGUI timeRemainingValueTextBox;
@@ -31,20 +32,19 @@ public class MatchManager : MonoBehaviour
             //you died screen DS
             yield return new WaitForSeconds(5);
         }
-        matchEndedGUI.SetActive(true);
-
         //Checks if there's a highscore, if it does it updates if necessary if not it creates one
         PlayerPrefs.SetInt("HighScore", (PlayerPrefs.HasKey("HighScore") && PlayerPrefs.GetInt("HighScore") >= playerPoints) ? PlayerPrefs.GetInt("HighScore") : playerPoints);
         //Same thing here
         PlayerPrefs.SetInt("TotalScore", (PlayerPrefs.HasKey("TotalScore")) ? PlayerPrefs.GetInt("TotalScore") + playerPoints : playerPoints);
-
         Time.timeScale = 0;
+        matchEndedGUI.SetActive(true);
     }
     private void Awake()
     {
         instance = this;
         matchDurationInSeconds = PlayerPrefs.GetInt("MatchDuration") * 60;
         secondsLeft = matchDurationInSeconds;
+        Time.timeScale = 1;
     }
     private void Update()
     {

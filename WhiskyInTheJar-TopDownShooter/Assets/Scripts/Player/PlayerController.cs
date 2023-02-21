@@ -56,6 +56,11 @@ public class PlayerController : Entity
 
     protected override void Update()
     {
+        if (IsDead){
+            playerInput = Vector2.zero;
+            return;
+        } 
+
         base.Update();
         GetPlayerInput();
 
