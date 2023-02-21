@@ -6,8 +6,8 @@ public class ChaserEnemy : Enemy
 {
     [Header("Attack Settings")]
     [SerializeField] private int damage = 80;
-    protected override void Reset(){
-        base.Reset();
+    protected override void Initialize(){
+        base.Initialize();
         enemyPointBonus = 134;
     }
     protected override void TargetDetected(Transform targetTransform){

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41249bfeff2b992419ce6a405731364a, type: 3}
+  m_Name: All Damageable Sprites
+  m_EditorClassIdentifier: 
+  DamageableSails:
+  - name: white
+    wholeSprite: {fileID: 826674272, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: 653054129, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: -995159210, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: green
+    wholeSprite: {fileID: -1672495870, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -1914462230, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 483742479, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: blue
+    wholeSprite: {fileID: -2063499542, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: 780285181, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 745256962, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: yellow
+    wholeSprite: {fileID: 91182084, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -690410349, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 678428887, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: red
+    wholeSprite: {fileID: -1409370560, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -1111267115, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 1637308789, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: black
+    wholeSprite: {fileID: -1352759174, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -196127423, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 996288618, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  DamageableBody:
+  - name: common
+    wholeSprite: {fileID: -200456074, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -1502663747, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: -2050035172, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+  - name: thicc
+    wholeSprite: {fileID: -1022812727, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    damagedSprite: {fileID: -1347236766, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}
+    badlyDamagedSprite: {fileID: 284155136, guid: 3a04e6958e7a8274b99837a2a7d5cfb9, type: 3}

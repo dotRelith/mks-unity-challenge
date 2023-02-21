@@ -27,7 +27,15 @@ public class Entity : MonoBehaviour
     protected EventHandler onHealthChanged;
     protected EventHandler onEntityDeath;
 
+    private GameObject entityBody;
+    private (string, Sprite, Sprite, Sprite) entityInfo;
+    private GameObject entitySail;
+
     protected virtual void Reset(){
+        Initialize();
+    }
+    protected virtual void Initialize()
+    {
         CapsuleCollider2D tempCapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         tempCapsuleCollider2D.size = new Vector2(1.75f, 0.9f);
         tempCapsuleCollider2D.direction = CapsuleDirection2D.Horizontal;
@@ -36,6 +44,7 @@ public class Entity : MonoBehaviour
     }
     protected virtual void Start()
     {
+        Initialize();
         entityRigidbody = GetComponent<Rigidbody2D>(); 
         entityHealth = entityMaxHealth;
         entityHealthBar = Instantiate(Resources.Load("HealthBarPivot"),this.transform) as GameObject;
@@ -117,24 +126,24 @@ public class Entity : MonoBehaviour
             switch (attackSide)
             {
                 case AttackSide.Left:
-                    cannonballOrigin = -1 * this.transform.right;
+                    cannonballOrigin = -1 * this.transform.up;
                     break;
                 case AttackSide.Right:
-                    cannonballOrigin = this.transform.right;
+                    cannonballOrigin = this.transform.up;
                     break;
                 case AttackSide.Front:
-                    cannonballOrigin = this.transform.up * 1.5f;
+                    cannonballOrigin = this.transform.right * 1.5f;
                     break;
             }
             cannonballOrigin *= 1.25f;
             Vector3 cannonballDirection = ((transform.position + cannonballOrigin) - this.transform.position).normalized;
 
             if (attackSide == AttackSide.Left || attackSide == AttackSide.Right){
-                cannonballOrigin -= Vector3.up * currentDistance;
+                cannonballOrigin -= Vector3.right * currentDistance;
                 currentDistance -= distanceIncrease;
             }
 
-            cannonball.GetComponent<Cannonball>().isFromPlayer = true;
+            cannonball.GetComponent<Cannonball>().isFromPlayer = this is PlayerController;
 
             cannonball.transform.position = this.transform.position + cannonballOrigin;
             Rigidbody2D cannonballRigidbody = cannonball.GetComponent<Rigidbody2D>();

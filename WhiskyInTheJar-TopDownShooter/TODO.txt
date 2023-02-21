@@ -1,10 +1,12 @@
 ﻿High priority:
 	Explosion animation ✔
-	Shooter enemy 
-	title screen
-	configuration
+	Shooter enemy ✔ (needs to handle rotation better)
+	title screen ✔
+	title screen functionality ✔
+	configuration ✔
 	boat graphics change according to health
-	spawner script
+	spawner script ✔
+
 	comment all lines
 	add code regions
 	add markdown descriptions
@@ -23,8 +25,8 @@ Very Low priority:
 	IA seeks health pack
 	ability to customize the player ship
 	add better navigation to AI
-	add high score in the title screen & end screen
-	add total score in the title screen & end screen
+	add high score in the title screen & end screen (halfway done)
+	add total score in the title screen & end screen (halfway done)
 	add you died screen
 	add effect on timer when time is bout to run out (red pulse)
 	add shrapnell particles when boat is hit (-collision.normal)

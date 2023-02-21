@@ -86,7 +86,9 @@ public class PlayerController : Entity
 
         if (Input.GetKeyUp(keyCode)){
             if (attackReady){
-                ExecuteAttack(currentAttackSide, sideAttackWidth, cannonballVelocity);
+                float attackWidth = (attackType == AttackType.Side) ? sideAttackWidth : frontalAttackWidth;
+                AttackSide attackSide = (attackType == AttackType.Frontal) ? AttackSide.Front : currentAttackSide;
+                ExecuteAttack(attackSide, attackWidth, cannonballVelocity);
                 attackReady = false;
                 attackStarted = false;
                 attackMesh.Clear();
@@ -119,7 +121,7 @@ public class PlayerController : Entity
 
     void FixedUpdate()
     {   
-        Vector2 targetVelocity = (playerInput.y > 0) ? transform.up * playerInput.y * movementSpeed : Vector2.zero;
+        Vector2 targetVelocity = (playerInput.y > 0) ? transform.right * playerInput.y * movementSpeed : Vector2.zero;
         velocity = Vector2.SmoothDamp(velocity, targetVelocity, ref velocitySmoothing, velocitySmoothTime, playerMaxVelocity);
         entityRigidbody.velocity = velocity;
 
@@ -167,36 +169,33 @@ public class PlayerController : Entity
         float halfWidth = frontalAttackWidth / 2f;
         float halfHeight = frontalAttackRange * progress / 2f;
 
-        return new Vector3[]
-        {
-        new Vector3(-halfWidth, 0f, 0f),
-        new Vector3(-halfWidth, halfHeight, 0f),
-        new Vector3(halfWidth, 0f, 0f),
-        new Vector3(halfWidth, halfHeight, 0f)
+        return new Vector3[]{
+            new Vector3(-halfWidth, 0f, 0f),
+            new Vector3(-halfWidth, halfHeight, 0f),
+            new Vector3(halfWidth, 0f, 0f),
+            new Vector3(halfWidth, halfHeight, 0f)
         };
     }
 
     private Vector3[] GetSideVertices(float progress)
     {
         float halfWidth = sideAttackRange * progress / 2f;
-        if (currentAttackSide == AttackSide.Left)
+        if (currentAttackSide == AttackSide.Right)
         {
             halfWidth *= -1;
         }
         float halfHeight = sideAttackWidth / 2f;
 
-        return new Vector3[]
-        {
-        new Vector3(halfWidth, -halfHeight, 0f),
-        new Vector3(halfWidth, halfHeight, 0f),
-        new Vector3(0, -halfHeight, 0f),
-        new Vector3(0, halfHeight, 0f)
+        return new Vector3[]{
+            new Vector3(halfWidth, -halfHeight, 0f),
+            new Vector3(halfWidth, halfHeight, 0f),
+            new Vector3(0, -halfHeight, 0f),
+            new Vector3(0, halfHeight, 0f)
         };
     }
     protected override void ExecuteAttack(AttackSide attackSide, float sideAttackWidth, float cannonballSpeed)
     {
         secondsPassedForAttack = 0;
         base.ExecuteAttack(attackSide, sideAttackWidth, cannonballSpeed);
-
     }
 }

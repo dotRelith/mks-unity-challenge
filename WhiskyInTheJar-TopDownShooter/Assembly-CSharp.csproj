@@ -59,9 +59,12 @@
     <Compile Include="Assets\Scripts\Gameplay\EndlessOcean.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MatchManager.cs" />
     <Compile Include="Assets\Scripts\Enemies\ChaserEnemy.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Cannonball.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\EnemySpawner.cs" />
     <Compile Include="Assets\Scripts\Player\CameraController.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
+    <Compile Include="Assets\Scripts\ScriptableObjects\DamageableSprites.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Enemies\ShooterEnemy.cs" />

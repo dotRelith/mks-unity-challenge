@@ -17,6 +17,8 @@ public class Enemy : Entity
     [SerializeField] private float roamRadius = 5f;
     [SerializeField] private float timeToChangeDirection = 2f;
     [SerializeField] private float stoppingSpeed = 1f;
+    protected Transform targetTransform;
+
 
     private Vector2 startRoamPosition;
     private float timeSinceDirectionChange = 0f;
@@ -41,17 +43,26 @@ public class Enemy : Entity
 
         Collider2D playerCollider = colliders.Find(c => c.CompareTag("Player"));
         Collider2D enemyCollider = colliders.Find(c => c.CompareTag("Enemy"));
-        if (playerCollider != null)
+        if (playerCollider != null){
             TargetDetected(playerCollider.transform);
-        else if (enemyCollider != null && enemyCollider.transform != this.transform)
+            targetTransform= playerCollider.transform;
+        }
+        else if (enemyCollider != null && enemyCollider.transform != this.transform){
             TargetDetected(enemyCollider.transform);
-        else if (arrived)
+            targetTransform= enemyCollider.transform;
+        }
+        else if (arrived){
             Roam();
+            targetTransform = null;
+        }
 
         if (!arrived && moveTarget != null)
             MoveTo(moveTarget.Value);
 
-        // Face the direction of movement
+        HandleRotation();
+    }
+
+    protected virtual void HandleRotation(){
         Vector2 direction = entityRigidbody.velocity.normalized;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
@@ -65,9 +76,7 @@ public class Enemy : Entity
 
         timeSinceDirectionChange += Time.fixedDeltaTime;
 
-        if (timeSinceDirectionChange >= timeToChangeDirection)
-        {
-            // Choose a random direction within the roam radius
+        if (timeSinceDirectionChange >= timeToChangeDirection){
             Vector2 randomDirection = Random.insideUnitCircle.normalized * roamRadius;
             Vector2 newRoamPosition = startRoamPosition + randomDirection;
             moveTarget = newRoamPosition;
@@ -91,7 +100,7 @@ public class Enemy : Entity
             if (currentSpeed <= 0.1f)
                 arrived = true;
         }
-
+        //make smoothdamp
         entityRigidbody.velocity = direction * currentSpeed;
     }
 
