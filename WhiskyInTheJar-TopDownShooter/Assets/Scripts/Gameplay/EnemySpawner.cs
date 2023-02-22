@@ -45,5 +45,7 @@ public class EnemySpawner : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(this.transform.position, spawnRadius);
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(this.transform.position, 256f);
     }
 }

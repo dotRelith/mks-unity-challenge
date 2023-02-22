@@ -9,10 +9,10 @@
 	end screen functionality ✔
 	show current score , high score & total score on end screen ✔
 
-	comment all lines
+	comment all lines (halfway done)
 	add code regions
 	add markdown descriptions
-	add tutorial on start of match
+	add tutorial on start of match *
 
 Low priority:
 	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat) -
@@ -23,7 +23,7 @@ Low priority:
 	add feature that sets Rigidbody and Collider to correct params when adding Entity to gameobject ✔
 	add localization for portuguese *
 	animated hover effect for buttons
-	add either a minimap or a enemy radar *
+	add either a minimap or a enemy radar * ✔
 
 Very Low priority:
 	health pack

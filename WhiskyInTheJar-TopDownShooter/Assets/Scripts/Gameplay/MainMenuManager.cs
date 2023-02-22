@@ -12,7 +12,7 @@ public class MainMenuManager : MonoBehaviour
     public void PlayGame(){
         PlayerPrefs.SetInt("MatchDuration", int.Parse(MatchDuration));
         PlayerPrefs.SetInt("EnemySpawnDelay", int.Parse(EnemySpawnDelay));
-        PlayerPrefs.SetInt("UltraSecretSettings", (UltraSecretSettings) ? 1 : 0);
+        PlayerPrefs.SetString("UltraSecretSettings", UltraSecretSettings.ToString());
         SceneManager.LoadScene(1);
     }
     private void Update()
