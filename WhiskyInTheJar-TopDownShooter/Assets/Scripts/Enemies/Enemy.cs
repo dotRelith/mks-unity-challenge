@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -87,6 +88,23 @@ public class Enemy : Entity
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.forward);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed);
+    }
+
+    protected override void OnDeath(object sender, EventArgs e)
+    {
+        if (IsDead)
+            return;
+
+        base.OnDeath(sender, e);
+
+        //Verifica se esse inimigo morreu devido a um ataque do player
+        if (lastHitByPlayer){
+            //Adiciona ponto para o player baseado no HP da entidade + um bonus determinado pela classe do inimigo
+            MatchManager.instance.AddPoints((int)Mathf.Floor(entityMaxHealth + ((Enemy)this).EnemyPointBonus));
+        }
+        //Instancia um HealthDrop com 40% de chance
+        if (Random.Range(0,100) >= 60 && MatchManager.UltraSecretSettings)
+            Instantiate(Resources.Load("HealthDrop"), this.transform.position, Quaternion.identity);
     }
 
     private void Roam()

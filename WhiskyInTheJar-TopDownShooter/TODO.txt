@@ -8,26 +8,29 @@
 	spawner script ✔
 	end screen functionality ✔
 	show current score , high score & total score on end screen ✔
+	fix cannonballs goind straight when player looking up ✔
+	beautify islands
 
 	comment all lines (halfway done)
 	add code regions
-	add markdown descriptions
-	add tutorial on start of match *
+	add markdown descriptions (that /// thingy)
+	add tutorial on start of match * ✔
 
 Low priority:
-	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat) -
+	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat) (if i use AddTorque the bug is fixed but the player will get stuck to walls)
 	add ambient music * ✔
 	add an indicator above entity health to inform the player if that enemy is a chaser or a shooter, if it is special or not
 	add sound effect for explosion, shoots fired, player death, etc * ✔
-	add death radius(shark eats player if past the death radius) *
+	add sound effect for when the attack is ready
+	add death radius(shark eats player if past the death radius) * ✔
 	add feature that sets Rigidbody and Collider to correct params when adding Entity to gameobject ✔
 	add localization for portuguese *
 	animated hover effect for buttons
 	add either a minimap or a enemy radar * ✔
 
 Very Low priority:
-	health pack
-	health pack drops from enemies
+	health pack ✔
+	health pack drops from enemies ✔
 	IA seeks health pack
 	ability to customize the player ship
 	add better navigation to AI *

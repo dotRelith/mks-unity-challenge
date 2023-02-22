@@ -7,6 +7,7 @@ public class Radar : MonoBehaviour
     [SerializeField] private float radarSpeed = 32f;
     [SerializeField] private float radarWidth = 45f;
     private Transform radarStick;
+    private Transform radarBackground;
     private Camera radarCamera;
     private Vector3 cameraVelocity;
     [SerializeField] private float cameraSmoothTime;
@@ -14,6 +15,7 @@ public class Radar : MonoBehaviour
 
     private void Awake(){
         radarStick = this.transform.Find("RadarStick");
+        radarBackground = this.transform.Find("RadarBackground");
         radarCamera = this.GetComponentInChildren<Camera>();
         UpdateDimensions();
     }
@@ -50,7 +52,8 @@ public class Radar : MonoBehaviour
     }
     private void UpdateDimensions(){
         radarStick.localScale = new Vector3(radarWidth, 0.5f, 0f);
-        radarCamera.orthographicSize = radarWidth * 2;
+        radarBackground.localScale = Vector2.one * radarWidth * 2;
+        radarCamera.orthographicSize = radarWidth;
     }
     private void OnDrawGizmos(){
         foreach (var collider in colliders){

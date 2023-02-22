@@ -13,8 +13,10 @@ public class ChaserEnemy : Enemy
     protected override void TargetDetected(Transform targetTransform){
         MoveTo(targetTransform.position);
     }
-    private void OnCollisionEnter2D(Collision2D collision){
-        if(collision.transform.CompareTag("Player") || collision.transform.CompareTag("Enemy") && !IsDead) {
+    void OnCollisionEnter2D(Collision2D collision){
+        if (this.IsDead)
+            return;
+        if(collision.transform.CompareTag("Player") || collision.transform.CompareTag("Enemy")) {
             collision.transform.GetComponent<Entity>().DamageEntity(damage, false);
             DamageEntity(EntityHealth, false);
         }

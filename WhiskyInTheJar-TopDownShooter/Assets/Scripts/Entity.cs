@@ -14,13 +14,13 @@ public class Entity : MonoBehaviour
     protected Rigidbody2D entityRigidbody;
 
     [Header("Entity Settings")]
-    [SerializeField] private int entityMaxHealth = 100;
+    [SerializeField] protected int entityMaxHealth = 100;
     private int entityHealth;
     protected int EntityHealth { get { return entityHealth; } }
 
     public bool IsDead { get; protected set; } = false;
     
-    private bool lastHitByPlayer = false;
+    protected bool lastHitByPlayer = false;
 
     private GameObject entityHealthBar;
     protected EventHandler onHealthChanged;
@@ -58,8 +58,6 @@ public class Entity : MonoBehaviour
 
         //Instancia a barra de vida da entidade
         entityHealthBar = Instantiate(Resources.Load("HealthBarPivot"),this.transform) as GameObject;
-        //Instancia os efeitos de velocidade da entidade
-        Instantiate(Resources.Load("BoatRippleParticle"), this.transform);
 
         //Inscreve no evento onHealthChanged duas coisa: a primeira é para que ele atualize o grafico da barra de vida, a segunda é que ele altere os sprites relativo a vida atual da entidade
         onHealthChanged += ((s, e) => {
@@ -93,7 +91,7 @@ public class Entity : MonoBehaviour
             int i = UnityEngine.Random.Range(0, sprites.DamageableSails.Length-1);
             entitySailSprites = sprites.DamageableSails[i];
             //Verifica se uma unidade aleatoria é maior que uma porcentagem, caso for o inimigo spawna com mais vida, caso contrario ele spawna sem nenhuma alteração
-            if (UnityEngine.Random.Range(0f, 1f) >= .7f){//30% of spawning a thicc body ship
+            if (UnityEngine.Random.Range(0, 100) >= 70){//30% of spawning a thicc body ship
                 entityBodySprites = sprites.DamageableBody[1];
                 //Aumenta a vida maxima do inimigo caso o corpo do barco seja mais grosso
                 entityMaxHealth = 175;
@@ -130,7 +128,7 @@ public class Entity : MonoBehaviour
         else//Se vida for maior ou igual que 60%
             return entitySailSprites.wholeSprite;
     }
-
+    float bermudaTriangleTimeToDamage = 0;
     protected virtual void Update(){
         //Verifica se a entidade está alem do limite do mapa
         if(Vector2.Distance(this.transform.position,Vector2.zero) >= MatchManager.instance.bermudaTriangleRange){
@@ -138,7 +136,11 @@ public class Entity : MonoBehaviour
             if (this is PlayerController)
                 MatchManager.instance.SetBermudaWarning(true);
             //Danifica a entidade
-            DamageEntity(5, false);
+            bermudaTriangleTimeToDamage += Time.deltaTime;
+            if(bermudaTriangleTimeToDamage >= 2){
+                bermudaTriangleTimeToDamage = 0;
+                DamageEntity(15, false);
+            }
         }else if (this is PlayerController)//Caso a entidade esteja dentro do limite do mapa e seja um player esconda o aviso do player
             MatchManager.instance.SetBermudaWarning(false);
 
@@ -149,14 +151,16 @@ public class Entity : MonoBehaviour
 
     protected virtual void OnDeath(object sender, EventArgs e){
         //Caso a entidade já esteja morta volte
-        if(IsDead) return;
+        if(IsDead) 
+            return;
 
         //Defina a entidade como morta
         IsDead = true;
 
         //Remova a velocidade e a rotação da entidade
-        entityRigidbody.velocity = Vector2.zero;
-        entityRigidbody.freezeRotation = true;
+        entityRigidbody.velocity = Vector3.zero;
+        entityRigidbody.angularVelocity = 0;
+        entityRigidbody.isKinematic = true;
 
         //Remova a barra de vida da entidade
         Destroy(entityHealthBar);
@@ -165,14 +169,6 @@ public class Entity : MonoBehaviour
         Destroy(Instantiate(Resources.Load("Explosion"), this.transform.position, this.transform.rotation),7);
         //Executa a animação de morte da entidade
         GetComponentInChildren<Animator>().SetBool("isDead", true);
-
-        //Verifica se esse entidade é um inimigo e verifica tambem se ela morreu devido a um ataque do player
-        if(this is Enemy){
-            if (lastHitByPlayer){
-                //Adiciona ponto para o player baseado no HP da entidade + um bonus determinado pela classe do inimigo
-                MatchManager.instance.AddPoints((int)Mathf.Floor(entityMaxHealth + ((Enemy)this).EnemyPointBonus));
-            }
-        }
 
         //Destroi a entidade depois de 12 segundos (tempo em que a animação de morte termina)
         Destroy(this.gameObject, 12);
@@ -257,11 +253,11 @@ public class Entity : MonoBehaviour
             //Dá uma distancia da entidade para que o tiro não acerte a entidade no começo do tiro
             cannonballOrigin *= 1.25f;
             //Calcula a direção do tiro
-            Vector3 cannonballDirection = ((transform.position + cannonballOrigin) - this.transform.position).normalized;
+            Vector3 cannonballDirection = ((this.transform.position + cannonballOrigin) - this.transform.position).normalized;
 
             //Caso o tiro da pra algum do lados ele diminui a distancia entre os tiros
             if (attackSide == AttackSide.Left || attackSide == AttackSide.Right){
-                cannonballOrigin -= Vector3.right * currentDistance;
+                cannonballOrigin -= this.transform.right * currentDistance;
                 currentDistance -= distanceIncrease;
             }
 

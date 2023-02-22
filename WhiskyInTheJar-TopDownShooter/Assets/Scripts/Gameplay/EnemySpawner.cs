@@ -16,7 +16,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         spawnInterval = PlayerPrefs.GetInt("EnemySpawnDelay");
-        SpawnEnemy(true, 5);
+        SpawnEnemy(true, 20);
     }
     private void Update()
     {
@@ -27,10 +27,16 @@ public class EnemySpawner : MonoBehaviour
     {
         if (((maxSpawnCount == 0 || spawnCount < maxSpawnCount) && timer >= spawnInterval) || ignoreCounter == true){
             for (int i = 0; i < spawnQuantity; i++){
-                Vector2 spawnPosition = Random.insideUnitCircle * Random.Range(16, spawnRadius);
-                var enemy = new GameObject("Enemy");
+                Vector2 randomPosition = Random.insideUnitCircle;
+                Vector2 spawnPosition = randomPosition * spawnRadius;
+                bool isOverlapingWithLevel = Physics2D.OverlapPoint(spawnPosition, LayerMask.NameToLayer("Obstacle"));
+                while (isOverlapingWithLevel){
+                    spawnPosition = Random.insideUnitCircle * spawnRadius;
+                    isOverlapingWithLevel = Physics2D.OverlapPoint(spawnPosition, LayerMask.NameToLayer("Obstacle"));
+                }
+                var enemy = new GameObject("Enemy");    
                 enemy.transform.position = transform.position + new Vector3(spawnPosition.x, spawnPosition.y, -0.2f);
-                if (Random.Range(0f, 1f) > shooterChaserDistribution)
+                if (Random.Range(0, 100) > shooterChaserDistribution*100)
                     enemy.AddComponent<ChaserEnemy>();
                 else
                     enemy.AddComponent<ShooterEnemy>();

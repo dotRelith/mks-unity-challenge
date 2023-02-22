@@ -15,8 +15,11 @@ public class MatchManager : MonoBehaviour
     private float secondsLeft;
     private int matchDurationInSeconds = 180;
 
+    private bool isMatchOver = false;
+
     [Header("Ultra Secret Stuff")]
     private bool ultraSecretSettings = false;
+    public static bool UltraSecretSettings { get { return instance.ultraSecretSettings; } }
     public float bermudaTriangleRange = 256f;
 
     [Header("UI objects")]
@@ -45,10 +48,11 @@ public class MatchManager : MonoBehaviour
 
         //Ajusta o tempo da partida 2
         secondsLeft = matchDurationInSeconds;
-        //Despause a fisica do jogo, importante caso o jogador tenha reiniciado o level
-        Time.timeScale = 1;
+        //Pausa a fisica do jogo, para que o player leia o tutorial em paz
+        Time.timeScale = 0;
+        isMatchOver = false;
     }
-    
+
     private void Update()
     {
         //Atualiza o tempo passado a cada frame. Caso o tempo restante esteja esgotado, ele inicia o fim da partida.
@@ -61,6 +65,9 @@ public class MatchManager : MonoBehaviour
 
     internal IEnumerator EndMatchCoroutine()
     {
+        //verifica se a partida já acabou, se sim não faz nada
+        if (isMatchOver) yield return 0;
+        isMatchOver = true;
         //Esconde a HUD do player
         timeRemainingValueTextBox.transform.parent.gameObject.SetActive(false);
         currentPointsValueTextBox.transform.parent.gameObject.SetActive(false);
@@ -75,10 +82,12 @@ public class MatchManager : MonoBehaviour
                 ? PlayerPrefs.GetInt("HighScore") 
                 : playerPoints);
         //Mesma coisa aqui
+        print(PlayerPrefs.GetInt("TotalScore"));
         PlayerPrefs.SetInt("TotalScore", 
             (PlayerPrefs.HasKey("TotalScore"))
                 ? PlayerPrefs.GetInt("TotalScore") + playerPoints
                 : playerPoints);
+        print("after " + PlayerPrefs.GetInt("TotalScore"));
         //Pausa a fisica do jogo
         Time.timeScale = 0;
         //Mostra a UI de fim de jogo ao player
@@ -103,8 +112,11 @@ public class MatchManager : MonoBehaviour
         //Altera o estado da HUD caso o player esteja fora da area segura (Logica dentro do Entity.cs)
         bermudaTriangleWarning.SetActive(value);
     }
+    //Despausa o jogo
+    public void ReadTutorial(){
+        Time.timeScale = 1;
+    }
     //Em tese deveria exibir um circulo mostrando a area segura para o desenvolvedor, porem, por algum motivo não está exibindo (estou utilizando EnemySpawner.cs por hora pra remediar)
-    
     public void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.white;

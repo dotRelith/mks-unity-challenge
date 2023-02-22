@@ -23,23 +23,14 @@ public class ShooterEnemy : Enemy
     {
         base.Initialize();
         enemyPointBonus = Random.Range(25f, 75f);
-        movementSpeed = 5.5f;
+        movementSpeed = 5.8f;
     }
 
     protected override void HandleRotation()
     {
-        /*
-        if (targetTransform != null){
-            Vector2 toTarget = targetTransform.position - transform.position;
-            float angle = Vector2.SignedAngle(transform.up, toTarget);
-            if (angle > 0)
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, 90), smoothTime);
-            else
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, -90), smoothTime);
-        }
-        else
-        */
+        if (targetTransform == null){
             base.HandleRotation();
+        }
     }
 
     protected override void TargetDetected(Transform targetTransform)
@@ -52,8 +43,13 @@ public class ShooterEnemy : Enemy
             float distanceToRight = Vector2.Distance(this.transform.position, rightParallelPosition);
             float distanceToLeft = Vector2.Distance(this.transform.position, leftParallelPosition);
 
-            MoveTo(distanceToRight < distanceToLeft ? rightParallelPosition : leftParallelPosition);
-            
+            Vector2 targetedPosition = (distanceToRight < distanceToLeft) ? rightParallelPosition : leftParallelPosition;
+            MoveTo(targetedPosition); 
+
+            Vector2 direction = (targetedPosition + (Vector2)targetTransform.right * 3f) - (Vector2)this.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
             (AttackSide, int, Color)[] possibleAttackRegions = {
                 (AttackSide.Left,3, Color.green),
                 (AttackSide.Right,3, Color.blue),
@@ -99,9 +95,9 @@ public class ShooterEnemy : Enemy
                     secondsLockedToTarget += Time.fixedDeltaTime;
                     isRayTouching = true;
                     if(secondsLockedToTarget >= secondsToDeployAttack){
-                        secondsLockedToTarget = 0;
                         float attackWidth = (possibleAttackRegion.Item1 == AttackSide.Left || possibleAttackRegion.Item1 == AttackSide.Right) ? sideAttackWidth : frontalAttackWidth;
                         ExecuteAttack(possibleAttackRegion.Item1, attackWidth, cannonballVelocity);
+                        secondsLockedToTarget = 0;
                     }
                 }
             }

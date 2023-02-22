@@ -15,11 +15,5 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetString("UltraSecretSettings", UltraSecretSettings.ToString());
         SceneManager.LoadScene(1);
     }
-    private void Update()
-    {
-        if (UltraSecretSettings){
-            //Display description
-        }
-    }
 }
 public enum Languages { English, Português}

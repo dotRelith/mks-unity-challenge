@@ -125,16 +125,17 @@ public class PlayerController : Entity
     }
 
     void FixedUpdate()
-    {   
+    {
         Vector2 targetVelocity = (playerInput.y > 0) ? transform.right * playerInput.y * movementSpeed : Vector2.zero;
         velocity = Vector2.SmoothDamp(velocity, targetVelocity, ref velocitySmoothing, velocitySmoothTime, playerMaxVelocity);
         entityRigidbody.velocity = velocity;
 
-        if(velocity.magnitude > 0.1f) {
-            currentRotation = (currentRotation - playerInput.x * rotationSpeed * ((velocity.magnitude >= 0.3f) ? velocity.magnitude : 1) * Time.fixedDeltaTime) % 360f;
+        if (entityRigidbody.velocity.magnitude > 0.1f){
+            currentRotation = (currentRotation - playerInput.x * rotationSpeed * ((entityRigidbody.velocity.magnitude >= 0.3f) ? entityRigidbody.velocity.magnitude : 1) * Time.fixedDeltaTime) % 360f;
             transform.rotation = Quaternion.Euler(0f, 0f, currentRotation);
         }
     }
+
     private bool RenderAttack(AttackType attackType, bool increaseTimer = true)
     {
         if (secondsPassedForAttack >= secondsToDeployAttack)

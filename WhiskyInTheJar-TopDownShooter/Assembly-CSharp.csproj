@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{99FC90B0-BFF9-D92C-E972-19E3E75110F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -57,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\UltraSecretSettings\Radar.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\EndlessOcean.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MatchManager.cs" />
     <Compile Include="Assets\Scripts\Enemies\ChaserEnemy.cs" />
     <Compile Include="Assets\Scripts\Gameplay\FinalScreenManager.cs" />
@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Enemies\ShooterEnemy.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\HealthDrop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -846,6 +847,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
