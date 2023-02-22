@@ -56,9 +56,11 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\UltraSecretSettings\Radar.cs" />
     <Compile Include="Assets\Scripts\Gameplay\EndlessOcean.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MatchManager.cs" />
     <Compile Include="Assets\Scripts\Enemies\ChaserEnemy.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\FinalScreenManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\MainMenuManager.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Cannonball.cs" />
     <Compile Include="Assets\Scripts\Gameplay\EnemySpawner.cs" />
@@ -68,7 +70,6 @@
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Entity.cs" />
     <Compile Include="Assets\Scripts\Enemies\ShooterEnemy.cs" />
-    <Compile Include="Assets\Scripts\Gameplay\FinalScreenManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

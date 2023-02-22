@@ -26,7 +26,7 @@ public class Cannonball : MonoBehaviour
         }
     }
     private void DestroyCannonball(){
-        Destroy(Instantiate(Resources.Load("Explosion"), this.transform.position, this.transform.rotation), 2);
+        Destroy(Instantiate(Resources.Load("Explosion"), this.transform.position, this.transform.rotation), 7);//7 second is the time needed for the sound to play
         Destroy(this.gameObject);
     }
 }

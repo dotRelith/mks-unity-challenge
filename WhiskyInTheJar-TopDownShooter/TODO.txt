@@ -15,13 +15,13 @@
 	add tutorial on start of match
 
 Low priority:
-	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat)
+	fix player boat dancing when stopped (player boat rotates when no input are given after moving boat) -
 	add ambient music * ✔
 	add an indicator above entity health to inform the player if that enemy is a chaser or a shooter, if it is special or not
 	add sound effect for explosion, shoots fired, player death, etc * ✔
 	add death radius(shark eats player if past the death radius) *
 	add feature that sets Rigidbody and Collider to correct params when adding Entity to gameobject ✔
-	add localization for portuguese
+	add localization for portuguese *
 	animated hover effect for buttons
 	add either a minimap or a enemy radar *
 
